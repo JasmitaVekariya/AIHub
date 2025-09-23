@@ -13,10 +13,50 @@ const NewChatModal = ({ show, onHide, onChatCreated }) => {
   const [error, setError] = useState('');
 
   const services = [
-    { value: 'ChatGPT', label: 'ChatGPT', icon: '🤖' },
-    { value: 'Gemini', label: 'Gemini', icon: '💎' },
-    { value: 'Claude', label: 'Claude', icon: '⚡' },
-    { value: 'DeepSeek', label: 'DeepSeek', icon: '🔍' },
+    { 
+      value: 'ChatGPT', 
+      label: 'ChatGPT', 
+      icon: (
+        <img 
+          src="https://img.icons8.com/ios-filled/50/chatgpt.png" 
+          alt="ChatGPT" 
+          style={{ width: '16px', height: '16px' }}
+        />
+      )
+    },
+    { 
+      value: 'Gemini', 
+      label: 'Gemini', 
+      icon: (
+        <img 
+          src="https://img.icons8.com/ios-filled/50/gemini-ai.png" 
+          alt="Gemini" 
+          style={{ width: '16px', height: '16px' }}
+        />
+      )
+    },
+    { 
+      value: 'Claude', 
+      label: 'Claude', 
+      icon: (
+        <img 
+          src="https://img.icons8.com/ios-filled/50/claude-ai.png" 
+          alt="Claude" 
+          style={{ width: '16px', height: '16px' }}
+        />
+      )
+    },
+    { 
+      value: 'DeepSeek', 
+      label: 'DeepSeek', 
+      icon: (
+        <img 
+          src="https://img.icons8.com/ios-filled/50/deepseek.png" 
+          alt="DeepSeek" 
+          style={{ width: '16px', height: '16px' }}
+        />
+      )
+    },
   ];
 
   const handleChange = (e) => {

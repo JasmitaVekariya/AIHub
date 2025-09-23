@@ -16,7 +16,8 @@ const ChatPage = () => {
     activeSessions, 
     fetchChatSessions, 
     addActiveSession,
-    removeActiveSession 
+    removeActiveSession,
+    deleteChatSession
   } = useChat();
   
   const [showNewChatModal, setShowNewChatModal] = useState(false);
@@ -64,7 +65,7 @@ const ChatPage = () => {
     navigate(`/chat/${session.id}`);
   };
 
-  // Handle session close
+  // Handle session close (just close the tab, don't delete)
   const handleSessionClose = (sessionId) => {
     removeActiveSession(sessionId);
     if (currentSession?.id === sessionId) {
@@ -73,8 +74,30 @@ const ChatPage = () => {
     }
   };
 
+  // Handle session delete (permanently delete the chat)
+  const handleSessionDelete = async (sessionId) => {
+    if (window.confirm('Are you sure you want to delete this chat? This action cannot be undone.')) {
+      try {
+        const result = await deleteChatSession(sessionId);
+        if (result.success) {
+          // If we're currently viewing the deleted session, navigate away
+          if (currentSession?.id === sessionId) {
+            setCurrentSession(null);
+            navigate('/');
+          }
+        } else {
+          console.error('Failed to delete session:', result.error);
+          // You could show a toast notification here
+        }
+      } catch (error) {
+        console.error('Error deleting session:', error);
+        // You could show a toast notification here
+      }
+    }
+  };
+
   return (
-    <div className="d-flex h-100">
+    <div className="d-flex h-100 position-relative">
       {/* Sidebar */}
       <Sidebar 
         sessions={chatSessions}
@@ -83,6 +106,7 @@ const ChatPage = () => {
         onSessionSelect={handleSessionSelect}
         onNewChat={() => setShowNewChatModal(true)}
         onSessionClose={handleSessionClose}
+        onSessionDelete={handleSessionDelete}
       />
 
       {/* Main Chat Area */}
@@ -91,6 +115,7 @@ const ChatPage = () => {
           <ChatInterface 
             session={currentSession}
             onClose={() => handleSessionClose(currentSession.id)}
+            onDelete={handleSessionDelete}
           />
         ) : (
           <div className="d-flex align-items-center justify-content-center h-100">

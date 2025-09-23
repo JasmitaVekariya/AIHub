@@ -5,9 +5,16 @@ import { ChatProvider } from './contexts/ChatContext';
 import LoginPage from './pages/LoginPage';
 import ChatPage from './pages/ChatPage';
 import ProfilePage from './pages/ProfilePage';
+import SettingsPage from './pages/SettingsPage';
 import SupportPage from './pages/SupportPage';
+import LandingPage from './pages/LandingPage';
 import MarkdownDemo from './components/MarkdownDemo';
 import LoadingSpinner from './components/LoadingSpinner';
+import { BackgroundPaths } from './components/BackgroundPaths';
+import LumaSpinDemo from './components/ui/luma-spin-demo';
+import AuthDemo from './components/ui/auth-demo';
+import ContactDemo from './components/ui/contact-demo';
+import { FeatureStepsDemo } from './components/ui/feature-demo';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
@@ -31,58 +38,98 @@ function PublicRoute({ children }) {
 
 function AppContent() {
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <LoginPage />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <ChatPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/chat/:sessionId"
-          element={
-            <ProtectedRoute>
-              <ChatPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/support"
-          element={
-            <ProtectedRoute>
-              <SupportPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/demo"
-          element={
-            <ProtectedRoute>
-              <MarkdownDemo />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </Router>
+    <BackgroundPaths>
+      <Router>
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={<LandingPage />}
+          />
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <ChatPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat/:sessionId"
+            element={
+              <ProtectedRoute>
+                <ChatPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/support"
+            element={
+              <ProtectedRoute>
+                <SupportPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/demo"
+            element={
+              <ProtectedRoute>
+                <MarkdownDemo />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/luma-demo"
+            element={
+              <ProtectedRoute>
+                <LumaSpinDemo />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/auth-demo"
+            element={
+              <AuthDemo />
+            }
+          />
+          <Route
+            path="/contact-demo"
+            element={
+              <ContactDemo />
+            }
+          />
+          <Route
+            path="/feature-demo"
+            element={
+              <FeatureStepsDemo />
+            }
+          />
+        </Routes>
+      </Router>
+    </BackgroundPaths>
   );
 }
 

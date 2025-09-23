@@ -1,278 +1,305 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { apiKeyAPI } from '../services/api';
 import { 
   ArrowLeft, 
   User, 
-  Key, 
-  Plus, 
-  Trash2, 
-  Save, 
-  Check,
-  AlertCircle,
-  Loader2
+  Mail,
+  Calendar,
+  LogOut,
+  Settings,
+  Shield,
+  Edit3,
+  Save,
+  X
 } from 'lucide-react';
+import { BackgroundPaths } from '../components/BackgroundPaths';
+import './ProfilePage.css';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const [apiKeys, setApiKeys] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [newApiKey, setNewApiKey] = useState({
-    serviceName: 'ChatGPT',
-    apiKey: ''
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedUser, setEditedUser] = useState({
+    username: user?.username || '',
+    email: user?.email || ''
   });
-  const [editingKey, setEditingKey] = useState(null);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
-  const services = [
-    { value: 'ChatGPT', label: 'ChatGPT', icon: '🤖', color: '#10a37f' },
-    { value: 'Gemini', label: 'Gemini', icon: '💎', color: '#4285f4' },
-    { value: 'Claude', label: 'Claude', icon: '⚡', color: '#ff6b35' },
-    { value: 'DeepSeek', label: 'DeepSeek', icon: '🔍', color: '#6366f1' },
-  ];
-
-  useEffect(() => {
-    loadApiKeys();
-  }, []);
-
-  const loadApiKeys = async () => {
+  const handleLogout = async () => {
     try {
-      setLoading(true);
-      const response = await apiKeyAPI.getApiKeys();
-      setApiKeys(response.data || []);
+      await logout();
+      navigate('/');
     } catch (error) {
-      console.error('Failed to load API keys:', error);
-      setError('Failed to load API keys');
-    } finally {
-      setLoading(false);
+      console.error('Logout error:', error);
     }
   };
 
-  const handleAddApiKey = async (e) => {
-    e.preventDefault();
-    if (!newApiKey.apiKey.trim()) {
-      setError('Please enter an API key');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError('');
-      await apiKeyAPI.saveApiKey(newApiKey);
-      setNewApiKey({ serviceName: 'ChatGPT', apiKey: '' });
-      setSuccess('API key saved successfully');
-      loadApiKeys();
-    } catch (error) {
-      console.error('Failed to add API key:', error);
-      setError('Failed to save API key');
-    } finally {
-      setLoading(false);
-    }
+  const handleSave = () => {
+    // Here you would typically update the user profile
+    // For now, we'll just toggle editing mode
+    setIsEditing(false);
+    // TODO: Implement profile update API call
   };
 
-  const handleDeleteApiKey = async (serviceName) => {
-    if (!window.confirm('Are you sure you want to delete this API key?')) return;
-
-    try {
-      setLoading(true);
-      await apiKeyAPI.deleteApiKey(serviceName);
-      setSuccess('API key deleted successfully');
-      loadApiKeys();
-    } catch (error) {
-      console.error('Failed to delete API key:', error);
-      setError('Failed to delete API key');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
-  const getServiceInfo = (serviceName) => {
-    return services.find(s => s.value === serviceName) || services[0];
-  };
-
-  const maskApiKey = (key) => {
-    if (!key) return 'No key';
-    return `${key.substring(0, 8)}...${key.substring(key.length - 4)}`;
+  const handleCancel = () => {
+    setEditedUser({
+      username: user?.username || '',
+      email: user?.email || ''
+    });
+    setIsEditing(false);
   };
 
   return (
-    <div className="min-vh-100 bg-primary">
-      <div className="container py-4">
-        {/* Header */}
-        <div className="d-flex align-items-center mb-4">
-          <button
-            className="btn btn-outline-secondary me-3"
-            onClick={() => navigate('/')}
-          >
-            <ArrowLeft size={16} className="me-2" />
-            Back to Chat
-          </button>
-          <h1 className="text-primary mb-0">Profile Settings</h1>
-        </div>
-
-        <div className="row">
-          {/* User Info */}
-          <div className="col-md-4 mb-4">
-            <div className="card bg-secondary border-primary">
-              <div className="card-body text-center">
-                <div className="mb-3">
-                  <div className="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center" style={{ width: '80px', height: '80px' }}>
-                    <User size={32} className="text-white" />
-                  </div>
-                </div>
-                <h5 className="text-primary mb-1">{user?.username || 'Unknown User'}</h5>
-                <p className="text-muted mb-3">{user?.email || 'No email'}</p>
-                <button
-                  className="btn btn-danger w-100"
-                  onClick={handleLogout}
-                >
-                  <ArrowLeft size={16} className="me-2" />
-                  Logout
-                </button>
-              </div>
+    <BackgroundPaths>
+      <div className="profile-page-container">
+        <div className="profile-page-content">
+          <div className="container">
+            {/* Header */}
+            <div className="text-center mb-5">
+              <button
+                className="btn btn-outline-secondary btn-sm mb-3"
+                onClick={() => navigate('/chat')}
+                style={{ 
+                  borderRadius: '25px',
+                  padding: '8px 20px'
+                }}
+              >
+                <ArrowLeft size={16} className="me-2" />
+                Back to Chat
+              </button>
+              <h1 className="display-4 fw-bold text-primary mb-3">Profile</h1>
+              <p className="lead text-muted">Manage your account information</p>
             </div>
-          </div>
 
-          {/* API Keys */}
-          <div className="col-md-8">
-            <div className="card bg-secondary border-primary">
-              <div className="card-header border-primary">
-                <h5 className="mb-0 d-flex align-items-center">
-                  <Key size={20} className="me-2" />
-                  API Keys
-                </h5>
-                <small className="text-muted">Manage your API keys for different AI services</small>
-              </div>
-              <div className="card-body">
-                {/* Add New API Key Form */}
-                <form onSubmit={handleAddApiKey} className="mb-4">
-                  <div className="row g-3">
-                    <div className="col-md-4">
-                      <label className="form-label">Service</label>
-                      <select
-                        className="form-select"
-                        value={newApiKey.serviceName}
-                        onChange={(e) => setNewApiKey({ ...newApiKey, serviceName: e.target.value })}
-                        disabled={loading}
-                      >
-                        {services.map((service) => (
-                          <option key={service.value} value={service.value}>
-                            {service.icon} {service.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label">API Key</label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        placeholder="Enter your API key..."
-                        value={newApiKey.apiKey}
-                        onChange={(e) => setNewApiKey({ ...newApiKey, apiKey: e.target.value })}
-                        required
-                        disabled={loading}
-                      />
-                    </div>
-                    <div className="col-md-2">
-                      <label className="form-label">&nbsp;</label>
-                      <button
-                        type="submit"
-                        className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
-                        disabled={loading || !newApiKey.apiKey.trim()}
-                      >
-                        {loading ? (
-                          <Loader2 size={16} className="spinner-border-sm" />
-                        ) : (
-                          <>
-                            <Save size={16} className="me-1" />
-                            Save
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </form>
-
-                {/* Error/Success Messages */}
-                {error && (
-                  <div className="alert alert-danger d-flex align-items-center mb-3">
-                    <AlertCircle size={16} className="me-2" />
-                    {error}
-                  </div>
-                )}
-                {success && (
-                  <div className="alert alert-success d-flex align-items-center mb-3">
-                    <Check size={16} className="me-2" />
-                    {success}
-                  </div>
-                )}
-
-                {/* API Keys List */}
-                <div className="row g-3">
-                  {apiKeys.length === 0 ? (
-                    <div className="col-12 text-center py-4">
-                      <div className="text-muted mb-2">
-                        <Key size={32} />
-                      </div>
-                      <p className="text-muted">No API keys configured</p>
-                    </div>
-                  ) : (
-                    apiKeys.map((apiKey) => {
-                      const serviceInfo = getServiceInfo(apiKey.serviceName);
-                      return (
-                        <div key={apiKey.serviceName} className="col-md-6">
-                          <div className="card bg-tertiary border-primary">
-                            <div className="card-body">
-                              <div className="d-flex align-items-center justify-content-between">
-                                <div className="d-flex align-items-center">
-                                  <div 
-                                    className="rounded-circle d-flex align-items-center justify-content-center me-3"
-                                    style={{ 
-                                      width: '40px', 
-                                      height: '40px',
-                                      backgroundColor: serviceInfo.color,
-                                      fontSize: '18px'
-                                    }}
-                                  >
-                                    {serviceInfo.icon}
-                                  </div>
-                                  <div>
-                                    <h6 className="mb-1 text-primary">{apiKey.serviceName}</h6>
-                                    <small className="text-muted">
-                                      {maskApiKey(apiKey.apiKey || apiKey.ApiKey)}
-                                    </small>
-                                  </div>
-                                </div>
-                                <button
-                                  className="btn btn-outline-danger btn-sm"
-                                  onClick={() => handleDeleteApiKey(apiKey.serviceName)}
-                                  disabled={loading}
-                                >
-                                  <Trash2 size={14} />
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+            {/* Profile Information */}
+            <div className="row justify-content-center">
+              <div className="col-lg-8">
+                <div className="card bg-secondary border-primary shadow-lg" style={{ 
+                  borderRadius: '20px'
+                }}>
+                  <div className="card-header border-primary p-4" style={{ 
+                    background: 'transparent',
+                    borderRadius: '20px 20px 0 0'
+                  }}>
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div className="d-flex align-items-center">
+                        <div 
+                          className="rounded-circle d-flex align-items-center justify-content-center me-3"
+                          style={{ 
+                            width: '50px', 
+                            height: '50px',
+                            background: 'var(--accent-color)'
+                          }}
+                        >
+                          <User size={24} className="text-white" />
                         </div>
-                      );
-                    })
-                  )}
+                        <div>
+                          <h4 className="mb-1 text-primary" style={{ 
+                            fontWeight: '600'
+                          }}>
+                            User Profile
+                          </h4>
+                          <p className="text-secondary mb-0" style={{ fontSize: '0.9rem' }}>
+                            Your personal account information
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        {!isEditing ? (
+                          <button
+                            className="btn btn-outline-primary btn-sm"
+                            onClick={() => setIsEditing(true)}
+                            style={{ 
+                              borderRadius: '10px',
+                              padding: '8px 16px'
+                            }}
+                          >
+                            <Edit3 size={16} className="me-1" />
+                            Edit
+                          </button>
+                        ) : (
+                          <div className="d-flex gap-2">
+                            <button
+                              className="btn btn-success btn-sm"
+                              onClick={handleSave}
+                              style={{ 
+                                borderRadius: '10px',
+                                padding: '8px 12px'
+                              }}
+                            >
+                              <Save size={16} />
+                            </button>
+                            <button
+                              className="btn btn-outline-secondary btn-sm"
+                              onClick={handleCancel}
+                              style={{ 
+                                borderRadius: '10px',
+                                padding: '8px 12px'
+                              }}
+                            >
+                              <X size={16} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="card-body p-4">
+                    {/* Profile Picture */}
+                    <div className="text-center mb-4">
+                      <div 
+                        className="rounded-circle d-inline-flex align-items-center justify-content-center"
+                        style={{ 
+                          width: '120px', 
+                          height: '120px',
+                          background: 'var(--accent-color)',
+                          fontSize: '48px'
+                        }}
+                      >
+                        <User size={60} className="text-white" />
+                      </div>
+                      <h5 className="mt-3 mb-1 text-primary">{user?.username || 'User'}</h5>
+                      <p className="text-muted mb-0">{user?.email || 'user@example.com'}</p>
+                    </div>
+
+                    {/* Profile Details */}
+                    <div className="row g-4">
+                      <div className="col-md-6">
+                        <div className="p-3 bg-tertiary rounded" style={{ 
+                          borderRadius: '12px',
+                          border: '1px solid var(--border-color)'
+                        }}>
+                          <div className="d-flex align-items-center mb-2">
+                            <User size={18} className="text-primary me-2" />
+                            <label className="form-label fw-semibold text-primary mb-0">
+                              Username
+                            </label>
+                          </div>
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={editedUser.username}
+                              onChange={(e) => setEditedUser({ ...editedUser, username: e.target.value })}
+                              style={{ 
+                                borderRadius: '8px',
+                                padding: '10px 12px'
+                              }}
+                            />
+                          ) : (
+                            <p className="mb-0 text-white">{user?.username || 'Not provided'}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="p-3 bg-tertiary rounded" style={{ 
+                          borderRadius: '12px',
+                          border: '1px solid var(--border-color)'
+                        }}>
+                          <div className="d-flex align-items-center mb-2">
+                            <Mail size={18} className="text-primary me-2" />
+                            <label className="form-label fw-semibold text-primary mb-0">
+                              Email Address
+                            </label>
+                          </div>
+                          {isEditing ? (
+                            <input
+                              type="email"
+                              className="form-control"
+                              value={editedUser.email}
+                              onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
+                              style={{ 
+                                borderRadius: '8px',
+                                padding: '10px 12px'
+                              }}
+                            />
+                          ) : (
+                            <p className="mb-0 text-white">{user?.email || 'Not provided'}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="p-3 bg-tertiary rounded" style={{ 
+                          borderRadius: '12px',
+                          border: '1px solid var(--border-color)'
+                        }}>
+                          <div className="d-flex align-items-center mb-2">
+                            <Calendar size={18} className="text-primary me-2" />
+                            <label className="form-label fw-semibold text-primary mb-0">
+                              Member Since
+                            </label>
+                          </div>
+                          <p className="mb-0 text-white">
+                            {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Unknown'}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="p-3 bg-tertiary rounded" style={{ 
+                          borderRadius: '12px',
+                          border: '1px solid var(--border-color)'
+                        }}>
+                          <div className="d-flex align-items-center mb-2">
+                            <Shield size={18} className="text-primary me-2" />
+                            <label className="form-label fw-semibold text-primary mb-0">
+                              Account Status
+                            </label>
+                          </div>
+                          <span className="badge bg-success" style={{ 
+                            borderRadius: '6px',
+                            padding: '6px 12px'
+                          }}>
+                            Active
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="mt-4 pt-4 border-top border-primary">
+                      <div className="row g-3">
+                        <div className="col-md-6">
+                          <button
+                            className="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center"
+                            onClick={() => navigate('/settings')}
+                            style={{ 
+                              borderRadius: '12px',
+                              padding: '12px',
+                              fontWeight: '600'
+                            }}
+                          >
+                            <Settings size={18} className="me-2" />
+                            API Settings
+                          </button>
+                        </div>
+                        <div className="col-md-6">
+                          <button
+                            className="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center"
+                            onClick={handleLogout}
+                            style={{ 
+                              borderRadius: '12px',
+                              padding: '12px',
+                              fontWeight: '600'
+                            }}
+                          >
+                            <LogOut size={18} className="me-2" />
+                            Logout
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </BackgroundPaths>
   );
 };
 

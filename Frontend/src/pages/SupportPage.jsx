@@ -8,8 +8,16 @@ import {
   Github, 
   ExternalLink,
   CheckCircle,
-  Send
+  Send,
+  Phone,
+  MapPin
 } from 'lucide-react';
+import { ContactCard } from '../components/ui/contact-card';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Textarea } from '../components/ui/textarea';
+import './SupportPage.css';
 
 const SupportPage = () => {
   const navigate = useNavigate();
@@ -113,138 +121,274 @@ const SupportPage = () => {
   }
 
   return (
-    <div className="min-vh-100 bg-primary">
-      <div className="container py-4">
+    <div className="support-page-container">
+      <div className="container py-5">
         {/* Header */}
-        <div className="d-flex align-items-center mb-4">
+        <div className="text-center mb-4">
           <button
-            className="btn btn-outline-secondary me-3"
+            className="btn btn-outline-secondary btn-sm mb-3"
             onClick={() => navigate('/')}
+            style={{ 
+              borderRadius: '25px',
+              padding: '8px 20px'
+            }}
           >
             <ArrowLeft size={16} className="me-2" />
             Back to Chat
           </button>
-          <h1 className="text-primary mb-0 d-flex align-items-center">
-            <HelpCircle size={28} className="me-3" />
-            Support
-          </h1>
         </div>
 
-        <div className="row">
-          {/* Contact Form */}
-          <div className="col-lg-8 mb-4">
-            <div className="card bg-secondary border-primary">
-              <div className="card-header border-primary">
-                <h5 className="mb-0">Contact Us</h5>
-                <small className="text-muted">Send us a message and we'll get back to you</small>
-              </div>
-              <div className="card-body">
-                <form onSubmit={handleSubmit}>
-                  <div className="row g-3">
-                    <div className="col-md-6">
-                      <label className="form-label">Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                      />
+      
+      {/* API Setup Instructions */}
+      <div className="row mt-2">
+        <div className="col-12">
+          <div className="card bg-secondary border-primary" style={{ 
+            borderRadius: '15px',
+            backdropFilter: 'blur(10px)',
+            background: 'rgba(45, 55, 72, 0.95)'
+          }}>
+            <div className="card-body p-4">
+              <h3 className="text-primary mb-4 text-center">
+                <Github size={24} className="me-2" />
+                How to Add API Keys
+              </h3>
+              <div className="row">
+                <div className="col-md-8 mx-auto">
+                  <div className="api-instructions">
+                    <div className="step-item mb-4">
+                      <div className="step-number">1</div>
+                      <div className="step-content">
+                        <h5 className="text-primary mb-2">Go to OpenRouter</h5>
+                        <p className="text-secondary mb-0">
+                          Visit <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer" 
+                          className="text-decoration-none" style={{ color: 'var(--accent-color)' }}>
+                            openrouter.ai
+                          </a> and sign in to your account
+                        </p>
+                      </div>
                     </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Email</label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                      />
+                    
+                    <div className="step-item mb-4">
+                      <div className="step-number">2</div>
+                      <div className="step-content">
+                        <h5 className="text-primary mb-2">Navigate to Models</h5>
+                        <p className="text-secondary mb-0">
+                          Click on the "Models" section in the navigation menu
+                        </p>
+                      </div>
                     </div>
-                    <div className="col-12">
-                      <label className="form-label">Subject</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        required
-                      />
+                    
+                    <div className="step-item mb-4">
+                      <div className="step-number">3</div>
+                      <div className="step-content">
+                        <h5 className="text-primary mb-2">Select Your AI Service</h5>
+                        <p className="text-secondary mb-0">
+                          In the series, go to your preferred AI service:
+                          <br />
+                          <span className="badge bg-primary me-2 mt-2">ChatGPT</span>
+                          <span className="badge bg-primary me-2 mt-2">Gemini</span>
+                          <span className="badge bg-primary me-2 mt-2">Claude</span>
+                          <span className="badge bg-primary me-2 mt-2">DeepSeek</span>
+                        </p>
+                      </div>
                     </div>
-                    <div className="col-12">
-                      <label className="form-label">Message</label>
-                      <textarea
-                        className="form-control"
-                        name="message"
-                        rows="5"
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                        placeholder="Describe your issue or question..."
-                      ></textarea>
+                    
+                    <div className="step-item mb-4">
+                      <div className="step-number">4</div>
+                      <div className="step-content">
+                        <h5 className="text-primary mb-2">Go to API Selection</h5>
+                        <p className="text-secondary mb-0">
+                          Click on "API" or "API Keys" section for your selected model
+                        </p>
+                      </div>
                     </div>
-                    <div className="col-12">
-                      <button type="submit" className="btn btn-primary">
-                        <Send size={16} className="me-2" />
-                        Send Message
-                      </button>
+                    
+                    <div className="step-item mb-4">
+                      <div className="step-number">5</div>
+                      <div className="step-content">
+                        <h5 className="text-primary mb-2">Create API Key</h5>
+                        <p className="text-secondary mb-0">
+                          Click "Create API Key" or "Generate Key" button
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="step-item mb-4">
+                      <div className="step-number">6</div>
+                      <div className="step-content">
+                        <h5 className="text-primary mb-2">Copy the API Key</h5>
+                        <p className="text-secondary mb-0">
+                          Copy the generated API key to your clipboard
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="step-item mb-4">
+                      <div className="step-number">7</div>
+                      <div className="step-content">
+                        <h5 className="text-primary mb-2">Add to Profile Page</h5>
+                        <p className="text-secondary mb-0">
+                          Go to your <a href="/profile" className="text-decoration-none" 
+                          style={{ color: 'var(--accent-color)' }}>Profile Page</a> and paste the API key in the corresponding field
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </form>
-              </div>
-            </div>
-          </div>
-
-          {/* Support Channels & FAQ */}
-          <div className="col-lg-4">
-            {/* Support Channels */}
-            <div className="card bg-secondary border-primary mb-4">
-              <div className="card-header border-primary">
-                <h6 className="mb-0">Get Help</h6>
-              </div>
-              <div className="card-body">
-                {supportChannels.map((channel, index) => (
-                  <div key={index} className="d-flex align-items-center mb-3">
-                    <div 
-                      className="rounded-circle d-flex align-items-center justify-content-center me-3"
-                      style={{ 
-                        width: '40px', 
-                        height: '40px',
-                        backgroundColor: channel.color
-                      }}
-                    >
-                      {channel.icon}
-                    </div>
-                    <div className="flex-grow-1">
-                      <h6 className="mb-1 text-primary">{channel.title}</h6>
-                      <small className="text-muted">{channel.description}</small>
-                      <div className="small text-muted">{channel.contact}</div>
-                    </div>
+                  
+                  <div className="alert alert-info mt-4" style={{
+                    background: 'rgba(16, 163, 127, 0.1)',
+                    border: '1px solid rgba(16, 163, 127, 0.3)',
+                    color: 'var(--text-primary)'
+                  }}>
+                    <strong>💡 Pro Tip:</strong> Keep your API keys secure and never share them publicly. 
+                    You can create multiple API keys for different services.
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* FAQ */}
-            <div className="card bg-secondary border-primary">
-              <div className="card-header border-primary">
-                <h6 className="mb-0">Frequently Asked Questions</h6>
-              </div>
-              <div className="card-body">
-                {faqs.map((faq, index) => (
-                  <div key={index} className="mb-3">
-                    <h6 className="text-primary mb-2">{faq.question}</h6>
-                    <p className="text-muted small mb-0">{faq.answer}</p>
-                    {index < faqs.length - 1 && <hr className="my-3 border-primary" />}
-                  </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <br></br>
+
+      {/* Contact Card */}
+      <div className="row justify-content-center">
+        <div className="col-12">
+          <ContactCard
+            title="Get in Touch"
+            description="If you have any questions regarding our Services or need help, please fill out the form here. We do our best to respond within 1 business day."
+            contactInfo={[
+              {
+                icon: Mail,
+                label: 'Email',
+                value: 'support@aihub.com',
+              },
+              {
+                icon: Phone,
+                label: 'Phone',
+                value: '+1 (555) 123-4567',
+              },
+              {
+                icon: MapPin,
+                label: 'Address',
+                value: 'San Francisco, CA',
+              }
+            ]}
+          >
+            {submitted ? (
+              <div className="text-center py-4">
+                <CheckCircle size={48} className="text-success mb-3" />
+                <h4 className="text-primary mb-2">Message Sent!</h4>
+                <p className="text-secondary mb-4">
+                  Thank you for contacting us. We'll get back to you soon.
+                </p>
+                <Button
+                  variant="primary"
+                  onClick={() => setSubmitted(false)}
+                >
+                  Send Another Message
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="contact-form">
+                <div className="contact-form-field">
+                  <Label>Name</Label>
+                  <Input 
+                    type="text" 
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Enter your full name"
+                    required
+                  />
+                </div>
+                <div className="contact-form-field">
+                  <Label>Email</Label>
+                  <Input 
+                    type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+                <div className="contact-form-field">
+                  <Label>Phone</Label>
+                  <Input 
+                    type="tel" 
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    placeholder="Enter your phone number"
+                  />
+                </div>
+                <div className="contact-form-field">
+                  <Label>Message</Label>
+                  <Textarea 
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Tell us how we can help you..."
+                    rows="4"
+                    required
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  variant="primary" 
+                  className="w-100"
+                >
+                  <Send size={16} className="me-2" />
+                  Submit
+                </Button>
+              </form>
+            )}
+          </ContactCard>
+        </div>
+      </div>
+
+
+      {/* FAQ Section */}
+      <div className="row mt-5">
+        <div className="col-12">
+          <h3 className="text-primary mb-4 text-center">Frequently Asked Questions</h3>
+          <div className="row">
+            {faqs.map((faq, index) => (
+              <div key={index} className="col-md-6 mb-4">
+                <div className="card bg-secondary border-primary h-100" style={{ 
+                  borderRadius: '15px',
+                  backdropFilter: 'blur(10px)',
+                  background: 'rgba(45, 55, 72, 0.95)'
+                }}>
+                  <div className="card-body p-4">
+                    <h5 className="text-primary mb-3">
+                      <HelpCircle size={20} className="me-2" />
+                      {faq.question}
+                    </h5>
+                    <p className="text-secondary">{faq.answer}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+
+      {/* Footer */}
+      <div className="text-center mt-5">
+        <p className="text-muted">
+          Need more help? Check out our{' '}
+          <a href="#" className="text-decoration-none" style={{ color: 'var(--accent-color)' }}>
+            documentation
+          </a>{' '}
+          or{' '}
+          <a href="#" className="text-decoration-none" style={{ color: 'var(--accent-color)' }}>
+            community forum
+          </a>
+        </p>
+      </div>
       </div>
     </div>
   );

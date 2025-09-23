@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useChat } from '../contexts/ChatContext';
-import { Send, X, Bot, User, Loader2 } from 'lucide-react';
+import { Send, X, Bot, User, Loader2, Trash2 } from 'lucide-react';
 import MarkdownRenderer from './MarkdownRenderer';
 
-const ChatInterface = ({ session, onClose }) => {
+const ChatInterface = ({ session, onClose, onDelete }) => {
   const { sendMessage, messages, sendingMessage, fetchMessages } = useChat();
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -41,12 +41,22 @@ const ChatInterface = ({ session, onClose }) => {
               <small className="text-muted">Please wait while we load your conversation</small>
             </div>
           </div>
-          <button 
-            className="btn btn-outline-secondary btn-sm"
-            onClick={onClose}
-          >
-            <X size={16} />
-          </button>
+          <div className="d-flex gap-2">
+            <button
+              className="btn btn-outline-danger btn-sm"
+              onClick={() => onDelete && onDelete(session.id)}
+              title="Delete chat"
+            >
+              <Trash2 size={16} />
+            </button>
+            <button 
+              className="btn btn-outline-secondary btn-sm"
+              onClick={onClose}
+              title="Close chat"
+            >
+              <X size={16} />
+            </button>
+          </div>
         </div>
 
         {/* Loading Content */}
@@ -101,12 +111,42 @@ const ChatInterface = ({ session, onClose }) => {
 
   const getServiceIcon = (serviceName) => {
     const icons = {
-      ChatGPT: '🤖',
-      Gemini: '💎',
-      Claude: '⚡',
-      DeepSeek: '🔍',
+      ChatGPT: (
+        <img 
+          src="https://img.icons8.com/ios-filled/50/chatgpt.png" 
+          alt="ChatGPT" 
+          style={{ width: '16px', height: '16px' }}
+        />
+      ),
+      Gemini: (
+        <img 
+          src="https://img.icons8.com/ios-filled/50/gemini-ai.png" 
+          alt="Gemini" 
+          style={{ width: '16px', height: '16px' }}
+        />
+      ),
+      Claude: (
+        <img 
+          src="https://img.icons8.com/ios-filled/50/claude-ai.png" 
+          alt="Claude" 
+          style={{ width: '16px', height: '16px' }}
+        />
+      ),
+      DeepSeek: (
+        <img 
+          src="https://img.icons8.com/ios-filled/50/deepseek.png" 
+          alt="DeepSeek" 
+          style={{ width: '16px', height: '16px' }}
+        />
+      ),
     };
-    return icons[serviceName] || '🤖';
+    return icons[serviceName] || (
+      <img 
+        src="https://img.icons8.com/ios/50/chatgpt.png" 
+        alt="AI" 
+        style={{ width: '16px', height: '16px' }}
+      />
+    );
   };
 
   return (
@@ -130,12 +170,22 @@ const ChatInterface = ({ session, onClose }) => {
             <small className="text-muted">{session.serviceName}</small>
           </div>
         </div>
-        <button
-          className="btn btn-outline-secondary btn-sm"
-          onClick={onClose}
-        >
-          <X size={16} />
-        </button>
+        <div className="d-flex gap-2">
+          <button
+            className="btn btn-outline-danger btn-sm"
+            onClick={() => onDelete && onDelete(session.id)}
+            title="Delete chat"
+          >
+            <Trash2 size={16} />
+          </button>
+          <button
+            className="btn btn-outline-secondary btn-sm"
+            onClick={onClose}
+            title="Close chat"
+          >
+            <X size={16} />
+          </button>
+        </div>
       </div>
 
       {/* Messages */}
