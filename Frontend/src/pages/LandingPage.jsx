@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { FeatureSteps } from '../components/ui/feature-section';
 import { BackgroundPaths } from '../components/BackgroundPaths';
+import AIModelsInfographic from '../components/ui/AIModelsInfographic';
 import './LandingPage.css';
 
 const LandingPage = () => {
@@ -110,6 +111,11 @@ const LandingPage = () => {
                 autoPlayInterval={4000}
                 imageHeight="h-400px"
               />
+            </div>
+
+            {/* AI Models Infographic Section */}
+            <div className="landing-section">
+              <AIModelsInfographic />
             </div>
 
             {/* Login Button - After Feature Steps */}

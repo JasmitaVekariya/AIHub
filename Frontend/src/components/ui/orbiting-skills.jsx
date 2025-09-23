@@ -1,4 +1,5 @@
 import React, { useEffect, useState, memo } from 'react';
+import AIIcon from './AIIcon';
 import './orbiting-skills.css';
 
 // --- AI Service Icon Components ---
@@ -317,8 +318,8 @@ export default function OrbitingSkills() {
         <div 
           className="position-relative d-flex align-items-center justify-content-center rounded-circle shadow-lg"
           style={{
-            width: '80px',
-            height: '80px',
+            width: '120px',
+            height: '120px',
             background: 'linear-gradient(135deg, #374151, #1f2937)',
             zIndex: 10
           }}
@@ -341,27 +342,7 @@ export default function OrbitingSkills() {
             }}
           />
           <div className="position-relative" style={{ zIndex: 10 }}>
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="36" 
-              height="36" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="url(#aiGradient)" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            >
-              <defs>
-                <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#10a37f" />
-                  <stop offset="100%" stopColor="#9333ea" />
-                </linearGradient>
-              </defs>
-              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-              <path d="M2 17l10 5 10-5"/>
-              <path d="M2 12l10 5 10-5"/>
-            </svg>
+            <AIIcon size={60} />
           </div>
         </div>
 

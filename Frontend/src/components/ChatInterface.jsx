@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useChat } from '../contexts/ChatContext';
 import { Send, X, Bot, User, Loader2, Trash2 } from 'lucide-react';
 import MarkdownRenderer from './MarkdownRenderer';
+import TextShimmer from './ui/TextShimmer';
+import './ui/TextShimmer.css';
 
 const ChatInterface = ({ session, onClose, onDelete }) => {
   const { sendMessage, messages, sendingMessage, fetchMessages } = useChat();
@@ -266,12 +268,14 @@ const ChatInterface = ({ session, onClose, onDelete }) => {
                   </div>
                   <div className="p-3 rounded bg-secondary text-primary">
                     <div className="d-flex align-items-center gap-2">
-                      <span className="text-muted">AI is typing</span>
-                      <div className="d-flex gap-1">
-                        <div className="typing-dot"></div>
-                        <div className="typing-dot"></div>
-                        <div className="typing-dot"></div>
-                      </div>
+                      <TextShimmer 
+                        as="span" 
+                        className="text-muted"
+                        duration={1.5}
+                        spread={1.5}
+                      >
+                        Generating response...
+                      </TextShimmer>
                     </div>
                   </div>
                 </div>

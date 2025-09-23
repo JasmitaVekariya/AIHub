@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { 
@@ -8,10 +8,7 @@ import {
   Calendar,
   LogOut,
   Settings,
-  Shield,
-  Edit3,
-  Save,
-  X
+  Shield
 } from 'lucide-react';
 import { BackgroundPaths } from '../components/BackgroundPaths';
 import './ProfilePage.css';
@@ -19,11 +16,6 @@ import './ProfilePage.css';
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedUser, setEditedUser] = useState({
-    username: user?.username || '',
-    email: user?.email || ''
-  });
 
   const handleLogout = async () => {
     try {
@@ -32,21 +24,6 @@ const ProfilePage = () => {
     } catch (error) {
       console.error('Logout error:', error);
     }
-  };
-
-  const handleSave = () => {
-    // Here you would typically update the user profile
-    // For now, we'll just toggle editing mode
-    setIsEditing(false);
-    // TODO: Implement profile update API call
-  };
-
-  const handleCancel = () => {
-    setEditedUser({
-      username: user?.username || '',
-      email: user?.email || ''
-    });
-    setIsEditing(false);
   };
 
   return (
@@ -104,44 +81,6 @@ const ProfilePage = () => {
                           </p>
                         </div>
                       </div>
-                      <div>
-                        {!isEditing ? (
-                          <button
-                            className="btn btn-outline-primary btn-sm"
-                            onClick={() => setIsEditing(true)}
-                            style={{ 
-                              borderRadius: '10px',
-                              padding: '8px 16px'
-                            }}
-                          >
-                            <Edit3 size={16} className="me-1" />
-                            Edit
-                          </button>
-                        ) : (
-                          <div className="d-flex gap-2">
-                            <button
-                              className="btn btn-success btn-sm"
-                              onClick={handleSave}
-                              style={{ 
-                                borderRadius: '10px',
-                                padding: '8px 12px'
-                              }}
-                            >
-                              <Save size={16} />
-                            </button>
-                            <button
-                              className="btn btn-outline-secondary btn-sm"
-                              onClick={handleCancel}
-                              style={{ 
-                                borderRadius: '10px',
-                                padding: '8px 12px'
-                              }}
-                            >
-                              <X size={16} />
-                            </button>
-                          </div>
-                        )}
-                      </div>
                     </div>
                   </div>
 
@@ -176,20 +115,7 @@ const ProfilePage = () => {
                               Username
                             </label>
                           </div>
-                          {isEditing ? (
-                            <input
-                              type="text"
-                              className="form-control"
-                              value={editedUser.username}
-                              onChange={(e) => setEditedUser({ ...editedUser, username: e.target.value })}
-                              style={{ 
-                                borderRadius: '8px',
-                                padding: '10px 12px'
-                              }}
-                            />
-                          ) : (
-                            <p className="mb-0 text-white">{user?.username || 'Not provided'}</p>
-                          )}
+                          <p className="mb-0 text-white">{user?.username || 'Not provided'}</p>
                         </div>
                       </div>
 
@@ -204,20 +130,7 @@ const ProfilePage = () => {
                               Email Address
                             </label>
                           </div>
-                          {isEditing ? (
-                            <input
-                              type="email"
-                              className="form-control"
-                              value={editedUser.email}
-                              onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
-                              style={{ 
-                                borderRadius: '8px',
-                                padding: '10px 12px'
-                              }}
-                            />
-                          ) : (
-                            <p className="mb-0 text-white">{user?.email || 'Not provided'}</p>
-                          )}
+                          <p className="mb-0 text-white">{user?.email || 'Not provided'}</p>
                         </div>
                       </div>
 
