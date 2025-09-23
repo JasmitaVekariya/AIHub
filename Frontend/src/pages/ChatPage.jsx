@@ -6,6 +6,7 @@ import { MessageSquare } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import ChatInterface from '../components/ChatInterface';
 import NewChatModal from '../components/NewChatModal';
+import DeleteChatModal from '../components/DeleteChatModal';
 
 const ChatPage = () => {
   const { sessionId } = useParams();
@@ -21,6 +22,9 @@ const ChatPage = () => {
   } = useChat();
   
   const [showNewChatModal, setShowNewChatModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [sessionToDelete, setSessionToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [currentSession, setCurrentSession] = useState(null);
 
   // Load chat sessions on mount
@@ -74,25 +78,45 @@ const ChatPage = () => {
     }
   };
 
-  // Handle session delete (permanently delete the chat)
-  const handleSessionDelete = async (sessionId) => {
-    if (window.confirm('Are you sure you want to delete this chat? This action cannot be undone.')) {
-      try {
-        const result = await deleteChatSession(sessionId);
-        if (result.success) {
-          // If we're currently viewing the deleted session, navigate away
-          if (currentSession?.id === sessionId) {
-            setCurrentSession(null);
-            navigate('/');
-          }
-        } else {
-          console.error('Failed to delete session:', result.error);
-          // You could show a toast notification here
+  // Handle session delete request (show modal)
+  const handleSessionDelete = (sessionId) => {
+    const session = chatSessions.find(s => s.id === sessionId);
+    setSessionToDelete(session);
+    setShowDeleteModal(true);
+  };
+
+  // Handle delete confirmation
+  const handleDeleteConfirm = async () => {
+    if (!sessionToDelete) return;
+
+    setIsDeleting(true);
+    try {
+      const result = await deleteChatSession(sessionToDelete.id);
+      if (result.success) {
+        // If we're currently viewing the deleted session, navigate away
+        if (currentSession?.id === sessionToDelete.id) {
+          setCurrentSession(null);
+          navigate('/');
         }
-      } catch (error) {
-        console.error('Error deleting session:', error);
+        setShowDeleteModal(false);
+        setSessionToDelete(null);
+      } else {
+        console.error('Failed to delete session:', result.error);
         // You could show a toast notification here
       }
+    } catch (error) {
+      console.error('Error deleting session:', error);
+      // You could show a toast notification here
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  // Handle delete modal close
+  const handleDeleteModalClose = () => {
+    if (!isDeleting) {
+      setShowDeleteModal(false);
+      setSessionToDelete(null);
     }
   };
 
@@ -144,6 +168,15 @@ const ChatPage = () => {
         show={showNewChatModal}
         onHide={() => setShowNewChatModal(false)}
         onChatCreated={handleNewChat}
+      />
+
+      {/* Delete Chat Modal */}
+      <DeleteChatModal
+        show={showDeleteModal}
+        onHide={handleDeleteModalClose}
+        onConfirm={handleDeleteConfirm}
+        chatName={sessionToDelete?.name || 'this chat'}
+        isDeleting={isDeleting}
       />
     </div>
   );
