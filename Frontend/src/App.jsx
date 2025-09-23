@@ -8,13 +8,8 @@ import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
 import SupportPage from './pages/SupportPage';
 import LandingPage from './pages/LandingPage';
-import MarkdownDemo from './components/MarkdownDemo';
 import LoadingSpinner from './components/LoadingSpinner';
 import { BackgroundPaths } from './components/BackgroundPaths';
-import LumaSpinDemo from './components/ui/luma-spin-demo';
-import AuthDemo from './components/ui/auth-demo';
-import ContactDemo from './components/ui/contact-demo';
-import { FeatureStepsDemo } from './components/ui/feature-demo';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
@@ -91,40 +86,6 @@ function AppContent() {
               <ProtectedRoute>
                 <SupportPage />
               </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/demo"
-            element={
-              <ProtectedRoute>
-                <MarkdownDemo />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/luma-demo"
-            element={
-              <ProtectedRoute>
-                <LumaSpinDemo />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/auth-demo"
-            element={
-              <AuthDemo />
-            }
-          />
-          <Route
-            path="/contact-demo"
-            element={
-              <ContactDemo />
-            }
-          />
-          <Route
-            path="/feature-demo"
-            element={
-              <FeatureStepsDemo />
             }
           />
         </Routes>

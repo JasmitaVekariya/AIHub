@@ -324,7 +324,8 @@ export const AuthUI = ({
   onSignIn,
   onSignUp,
   loading = false,
-  error = null
+  error = null,
+  customComponent = null
 }) => {
   const [isSignIn, setIsSignIn] = useState(true);
   
@@ -384,28 +385,49 @@ export const AuthUI = ({
         />
       </div>
 
-      <div
-        className="auth-image-section"
-        style={{ backgroundImage: `url(${currentContent.image.src})` }}
-        key={currentContent.image.src}
-      >
-        <div className="auth-image-overlay" />
-        
-        <div className="auth-quote-container">
-          <blockquote className="auth-quote">
-            <p className="auth-quote-text">
-              "<Typewriter
-                key={currentContent.quote.text}
-                text={currentContent.quote.text}
-                speed={60}
-              />"
-            </p>
-            <cite className="auth-quote-author">
-              — {currentContent.quote.author}
-            </cite>
-          </blockquote>
+      {customComponent ? (
+        <div className="auth-image-section">
+          <div className="auth-image-overlay" />
+          {customComponent}
+          <div className="auth-quote-container">
+            <blockquote className="auth-quote">
+              <p className="auth-quote-text">
+                "<Typewriter
+                  key={currentContent.quote.text}
+                  text={currentContent.quote.text}
+                  speed={60}
+                />"
+              </p>
+              <cite className="auth-quote-author">
+                — {currentContent.quote.author}
+              </cite>
+            </blockquote>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          className="auth-image-section"
+          style={{ backgroundImage: `url(${currentContent.image.src})` }}
+          key={currentContent.image.src}
+        >
+          <div className="auth-image-overlay" />
+          
+          <div className="auth-quote-container">
+            <blockquote className="auth-quote">
+              <p className="auth-quote-text">
+                "<Typewriter
+                  key={currentContent.quote.text}
+                  text={currentContent.quote.text}
+                  speed={60}
+                />"
+              </p>
+              <cite className="auth-quote-author">
+                — {currentContent.quote.author}
+              </cite>
+            </blockquote>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

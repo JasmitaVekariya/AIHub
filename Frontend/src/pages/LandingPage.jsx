@@ -137,7 +137,7 @@ const LandingPage = () => {
                     }}
                   >
                     {/* <LogIn size={20} className="me-2" /> */}
-                    Get Started - Login
+                    Get Started 
                     <ArrowRight size={20} className="ms-2" />
                   </button>
                 </div>
