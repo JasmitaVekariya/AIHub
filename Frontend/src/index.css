@@ -1,20 +1,23 @@
 /* Import Bootstrap */
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
-/* Custom CSS Variables for Dark Theme */
+/* Custom CSS Variables for Dark Black Theme */
 :root {
-  --bg-primary: #212529;
-  --bg-secondary: #2d3748;
-  --bg-tertiary: #374151;
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --bg-quaternary: #222222;
   --text-primary: #ffffff;
-  --text-secondary: #a0aec0;
-  --text-muted: #718096;
-  --border-color: #4a5568;
+  --text-secondary: #e0e0e0;
+  --text-muted: #a0a0a0;
+  --text-light: #f5f5f5;
+  --border-color: #333333;
+  --border-light: #444444;
   --accent-color: #10a37f;
   --accent-hover: #0d8a6b;
-  --danger-color: #e53e3e;
-  --warning-color: #ed8936;
-  --success-color: #38a169;
+  --danger-color: #ff4444;
+  --warning-color: #ffaa00;
+  --success-color: #00aa44;
   --sidebar-width: 260px;
   --header-height: 60px;
 }
@@ -35,6 +38,7 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   overflow: hidden;
+  min-height: 100vh;
 }
 
 #root {
@@ -65,10 +69,19 @@ body {
 .text-primary { color: var(--text-primary) !important; }
 .text-secondary { color: var(--text-secondary) !important; }
 .text-muted { color: var(--text-muted) !important; }
+.text-light { color: var(--text-light) !important; }
 .bg-primary { background-color: var(--bg-primary) !important; }
 .bg-secondary { background-color: var(--bg-secondary) !important; }
 .bg-tertiary { background-color: var(--bg-tertiary) !important; }
+.bg-quaternary { background-color: var(--bg-quaternary) !important; }
 .border-primary { border-color: var(--border-color) !important; }
+.border-light { border-color: var(--border-light) !important; }
+
+/* Dark theme overrides for Bootstrap components */
+.bg-dark { background-color: var(--bg-primary) !important; }
+.bg-light { background-color: var(--bg-secondary) !important; }
+.text-dark { color: var(--text-primary) !important; }
+.text-light { color: var(--text-light) !important; }
 
 /* Button Styles */
 .btn-primary {
@@ -95,13 +108,13 @@ body {
 
 /* Form Controls */
 .form-control, .form-select {
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-tertiary);
   border-color: var(--border-color);
   color: var(--text-primary);
 }
 
 .form-control:focus, .form-select:focus {
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-tertiary);
   border-color: var(--accent-color);
   color: var(--text-primary);
   box-shadow: 0 0 0 0.2rem rgba(16, 163, 127, 0.25);
@@ -111,11 +124,28 @@ body {
   color: var(--text-muted);
 }
 
+/* Input group styling */
+.input-group-text {
+  background-color: var(--bg-quaternary);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
 /* Card Styles */
 .card {
   background-color: var(--bg-secondary);
   border-color: var(--border-color);
   color: var(--text-primary);
+}
+
+.card-header {
+  background-color: var(--bg-tertiary);
+  border-bottom-color: var(--border-color);
+}
+
+.card-footer {
+  background-color: var(--bg-tertiary);
+  border-top-color: var(--border-color);
 }
 
 /* Modal Styles */
@@ -126,11 +156,17 @@ body {
 }
 
 .modal-header {
+  background-color: var(--bg-tertiary);
   border-bottom-color: var(--border-color);
 }
 
 .modal-footer {
+  background-color: var(--bg-tertiary);
   border-top-color: var(--border-color);
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* Loading Spinner */

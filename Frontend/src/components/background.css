@@ -18,8 +18,8 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  color: var(--accent-color);
-  opacity: 0.3;
+  color: #ffffff;
+  opacity: 0.6;
 }
 
 .background-paths-wrapper svg {
@@ -54,7 +54,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .background-paths-wrapper {
-    opacity: 0.2;
+    opacity: 0.3;
   }
   
   .gradient-text {
@@ -68,8 +68,8 @@
 }
 
 .background-paths-wrapper {
-  color: var(--accent-color);
-  opacity: 0.15;
+  color: #ffffff;
+  opacity: 0.4;
 }
 
 /* Subtle animation for the entire background */
