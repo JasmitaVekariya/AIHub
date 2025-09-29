@@ -4,6 +4,8 @@ import { Send, X, Bot, User, Loader2, Trash2 } from 'lucide-react';
 import MarkdownRenderer from './MarkdownRenderer';
 import TextShimmer from './ui/TextShimmer';
 import './ui/TextShimmer.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 const ChatInterface = ({ session, onClose, onDelete }) => {
   const { sendMessage, messages, sendingMessage, fetchMessages } = useChat();
@@ -11,6 +13,20 @@ const ChatInterface = ({ session, onClose, onDelete }) => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
+  const [copiedId, setCopiedId] = useState(null);
+
+  const handleCopy = (text, id) => {
+    if (!text) return;
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        setCopiedId(id);
+        // hide after 2 seconds
+        setTimeout(() => setCopiedId(null), 2000);
+      })
+      .catch(err => {
+        console.error('Copy failed', err);
+      });
+  };
 
   const sessionMessages = messages[session.id] || [];
 
@@ -232,7 +248,7 @@ const ChatInterface = ({ session, onClose, onDelete }) => {
                   </div>
 
                   {/* Message Content */}
-                  <div className={`p-3 rounded ${message.role === 'user' ? 'bg-primary text-white' : 'bg-secondary text-primary'}`}>
+                  <div className={`p-3 rounded ${message.role === 'user' ? 'bg-primary text-white' : 'bg-secondary text-primary text-start'}`}>
                     {message.role === 'user' ? (
                       <div className="message-content" style={{ whiteSpace: 'pre-wrap' }}>
                         {message.content}
@@ -243,8 +259,47 @@ const ChatInterface = ({ session, onClose, onDelete }) => {
                         className="message-content"
                       />
                     )}
-                    <div className={`small mt-2 ${message.role === 'user' ? 'text-white-50' : 'text-muted'}`}>
-                      {new Date(message.timestamp || message.createdAt).toLocaleTimeString()}
+                    <div
+                      className={`small mt-2 d-flex align-items-center gap-2 position-relative ${
+                        message.role === 'user' ? 'text-white-50' : 'text-muted'
+                      }`}
+                    >
+                      {message.role !== 'user' && (
+                        <div className="position-relative">
+                          {/* Copy button */}
+                          <button
+                            className="btn btn-sm btn-link text-decoration-none p-0"
+                            onClick={() => handleCopy(message.content, message.Id || index)}
+                            title="Copy message"
+                          >
+                            <FontAwesomeIcon icon={faCopy} className="text-white" />
+                          </button>
+
+                          {/* Popup only for this message */}
+                          {copiedId === (message.Id || index) && (
+                            <div
+                              className="position-absolute start-50 translate-middle-x"
+                              style={{
+                                bottom: '125%',
+                                background: 'rgba(0,0,0,0.85)',
+                                color: '#fff',
+                                padding: '6px 10px',
+                                borderRadius: '6px',
+                                fontSize: '12px',
+                                whiteSpace: 'nowrap',
+                                boxShadow: '0px 2px 6px rgba(0,0,0,0.2)',
+                                zIndex: 10
+                              }}
+                            >
+                              Message is copied!
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      <span className="text-white">
+                        {new Date(message.timestamp || message.createdAt).toLocaleTimeString()}
+                      </span>
                     </div>
                   </div>
                 </div>

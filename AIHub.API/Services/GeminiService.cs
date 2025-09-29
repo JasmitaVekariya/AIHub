@@ -28,7 +28,7 @@ namespace AIHub.API.Services
                 // request body
                 var requestBody = new
                 {
-                    model = "google/gemini-2.0-flash-exp:free",
+                    model = "openai/gpt-oss-20b:free",
                     messages = new[]
                     {
                         new { role = "user", content = message }

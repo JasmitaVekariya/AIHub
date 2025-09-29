@@ -4262,24 +4262,31 @@
     ]
   },
   "packageFolders": {
-    "/Users/jasmitavekariya/.nuget/packages/": {}
+    "C:\\Users\\kashu\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jasmitavekariya/Sem 5/AIHub/AIHub/AIHub.API/AIHub.API.csproj",
+      "projectUniqueName": "C:\\CE\\CE SEM-V\\WAD\\AIHub\\AIHub\\AIHub.API\\AIHub.API.csproj",
       "projectName": "AIHub.API",
-      "projectPath": "/Users/jasmitavekariya/Sem 5/AIHub/AIHub/AIHub.API/AIHub.API.csproj",
-      "packagesPath": "/Users/jasmitavekariya/.nuget/packages/",
-      "outputPath": "/Users/jasmitavekariya/Sem 5/AIHub/AIHub/AIHub.API/obj/",
+      "projectPath": "C:\\CE\\CE SEM-V\\WAD\\AIHub\\AIHub\\AIHub.API\\AIHub.API.csproj",
+      "packagesPath": "C:\\Users\\kashu\\.nuget\\packages\\",
+      "outputPath": "C:\\CE\\CE SEM-V\\WAD\\AIHub\\AIHub\\AIHub.API\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/Users/jasmitavekariya/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\kashu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4364,7 +4371,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
