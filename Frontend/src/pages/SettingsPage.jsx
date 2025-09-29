@@ -100,48 +100,52 @@ const SettingsPage = () => {
   const handleAddApiKey = async (e) => {
     e.preventDefault();
     if (!newApiKey.apiKey.trim()) return;
-
+  
     try {
       setLoading(true);
       setError('');
       const response = await apiKeyAPI.addApiKey(newApiKey);
-      if (response.success) {
-        setSuccess('API key added successfully!');
+  
+      // ✅ Check backend message instead of success flag
+      if (response.data.message) {
+        setSuccess(response.data.message);
         setNewApiKey({ serviceName: 'ChatGPT', apiKey: '' });
         loadApiKeys();
         setTimeout(() => setSuccess(''), 3000);
       } else {
-        setError(response.error || 'Failed to add API key');
+        setError(response.data.error || 'Failed to add API key');
       }
     } catch (error) {
       console.error('Error adding API key:', error);
-      setError('Failed to add API key');
+      setError(error.response?.data?.message || 'Failed to add API key');
     } finally {
       setLoading(false);
     }
   };
+  
 
-  const handleDeleteApiKey = async (id) => {
+  const handleDeleteApiKey = async (serviceName) => {
     if (!window.confirm('Are you sure you want to delete this API key?')) return;
-
+  
     try {
       setLoading(true);
-      const response = await apiKeyAPI.deleteApiKey(id);
-      if (response.success) {
-        setSuccess('API key deleted successfully!');
+      const response = await apiKeyAPI.deleteApiKey(serviceName);
+  
+      if (response.data.message) {
+        setSuccess(response.data.message);
         loadApiKeys();
         setTimeout(() => setSuccess(''), 3000);
       } else {
-        setError(response.error || 'Failed to delete API key');
+        setError(response.data.error || 'Failed to delete API key');
       }
     } catch (error) {
       console.error('Error deleting API key:', error);
-      setError('Failed to delete API key');
+      setError(error.response?.data?.message || 'Failed to delete API key');
     } finally {
       setLoading(false);
     }
   };
-
+  
   return (
     <BackgroundPaths>
       <div className="profile-page-container">
@@ -225,7 +229,7 @@ const SettingsPage = () => {
                       <h6 className="mb-3 text-primary" style={{ 
                         fontWeight: '600'
                       }}>
-                        <Plus size={18} className="me-2" />
+                        {/* <Plus size={18} className="me-2" /> */}
                         Add New API Key
                       </h6>
                       
@@ -247,7 +251,7 @@ const SettingsPage = () => {
                             >
                               {services.map((service) => (
                                 <option key={service.value} value={service.value}>
-                                  {service.icon} {service.label}
+                                  {service.label}
                                 </option>
                               ))}
                             </select>
@@ -345,7 +349,7 @@ const SettingsPage = () => {
                                   </div>
                                   <button
                                     className="btn btn-outline-danger btn-sm"
-                                    onClick={() => handleDeleteApiKey(key.id)}
+                                    onClick={() => handleDeleteApiKey(key.serviceName)}
                                     disabled={loading}
                                     style={{ 
                                       borderRadius: '6px',

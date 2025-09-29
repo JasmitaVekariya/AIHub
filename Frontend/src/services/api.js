@@ -48,7 +48,7 @@ export const authAPI = {
 // API Key API
 export const apiKeyAPI = {
   getApiKeys: () => api.get('/api/apikey'),
-  saveApiKey: (apiKeyData) => api.post('/api/apikey', apiKeyData),
+  addApiKey: (apiKeyData) => api.post('/api/apikey', apiKeyData),
   deleteApiKey: (serviceName) => api.delete(`/api/apikey/${serviceName}`),
   validateApiKey: (serviceName) => api.post('/api/apikey/validate', { serviceName }),
 };
